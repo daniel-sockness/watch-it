@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery } from "react-query";
-import { Button } from "flowbite-react";
 import Card from "@/components/card";
 
 export default function Movies() {
