@@ -31,6 +31,12 @@ export default function Nav() {
 				<Navbar.Link active={router.pathname === "/"} href="/">
 					<p>Home</p>
 				</Navbar.Link>
+				<Navbar.Link active={router.pathname === "/movies"} href="/movies">
+					<p>Movies</p>
+				</Navbar.Link>
+				<Navbar.Link active={router.pathname === "/shows"} href="/shows">
+					<p>TV Shows</p>
+				</Navbar.Link>
 			</Navbar.Collapse>
 		</Navbar>
 	);
