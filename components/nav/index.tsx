@@ -7,7 +7,7 @@ export default function Nav() {
 	const { theme, setTheme } = useTheme();
 	const router = useRouter();
 	return (
-		<Navbar fluid className="dark:bg-slate-700">
+		<Navbar fluid className="dark:bg-slate-700 bg-slate-100">
 			<Navbar.Brand href="https://flowbite-react.com">
 				<span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
 					Watch It
