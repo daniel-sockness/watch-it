@@ -1,58 +1,21 @@
+//TODO Add Infinite Scroll to this page
+
 import { Label, TextInput, Select, Button } from "flowbite-react";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import { useInView } from "react-intersection-observer";
-import { useInfiniteQuery, useQueryClient } from "react-query";
 export default function Home() {
-	const queryClient = useQueryClient();
+	const [data, setData] = useState([]);
 	const [title, setTitle] = useState("");
-	const [type, setType] = useState("movie");
+	const [type, setType] = useState("all");
 	const handleSubmit = async () => {
 		console.log("Clicked submitting search");
 		var response = await axios.post("/api/search", {
 			search: title,
 			type: type,
 		});
+		setData(response.data);
 		console.log(response.data);
 	};
-
-	const { ref, inView } = useInView();
-
-	const {
-		status,
-		data,
-		error,
-		isFetching,
-		isFetchingNextPage,
-		isFetchingPreviousPage,
-		fetchNextPage,
-		fetchPreviousPage,
-		hasNextPage,
-		hasPreviousPage,
-	} = useInfiniteQuery(
-		["search"],
-		async ({ pageParam = 1 }) => {
-			const res = await axios.post("/api/search", {
-				search: title,
-				type: type,
-				page: pageParam,
-			});
-			return res.data;
-		},
-		{
-			getNextPageParam: (lastPage) => {
-				return lastPage.page < lastPage.total_pages // Here I'm assuming you have access to the total number of pages
-					? lastPage.page + 1
-					: undefined; // If there is not a next page, getNextPageParam will return undefined and the hasNextPage boolean will be set to 'false'
-			},
-		}
-	);
-	useEffect(() => {
-		if (inView) {
-			fetchNextPage();
-		}
-	}, [inView]);
-
 	return (
 		<div className="p-4">
 			<div className="p-4 rounded-lg dark:border-gray-700">
@@ -67,10 +30,7 @@ export default function Home() {
 								required
 								type="text"
 								value={title}
-								onChange={(e) => {
-									setTitle(e.currentTarget.value);
-									queryClient.resetQueries();
-								}}
+								onChange={(e) => setTitle(e.currentTarget.value)}
 							/>
 						</div>
 						<Select
@@ -79,6 +39,7 @@ export default function Home() {
 							required
 							onChange={(e) => setType(e.currentTarget.value)}
 						>
+							<option value="any">Any</option>
 							<option value="movie">Movie</option>
 							<option value="series">Show</option>
 						</Select>
@@ -102,17 +63,6 @@ export default function Home() {
 					</div>
 				</div>
 			</div>
-			<button
-				ref={ref}
-				onClick={() => fetchNextPage()}
-				disabled={!hasNextPage || isFetchingNextPage}
-			>
-				{isFetchingNextPage
-					? "Loading more..."
-					: hasNextPage
-					? "Load Newer"
-					: "Nothing more to load"}
-			</button>
 		</div>
 	);
 }
