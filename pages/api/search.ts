@@ -11,11 +11,14 @@ export default async function handler(
 				`https://api.themoviedb.org/3/search/movie?language=en-US&include_adult=false&page=${req.body.page}&api_key=${process.env.TMDB_API_KEY}&query=${req.body.search}}`
 			);
 			data = response.data;
+			data.type = "movie";
+			console.log(data);
 		} else if (req.body.type === "show") {
 			const response = await axios.get(
 				`https://api.themoviedb.org/3/search/tv?language=en-US&include_adult=false&page=${req.query.page}&api_key=${process.env.TMDB_API_KEY}&query=${req.body.search}`
 			);
 			data = response.data;
+			data.type = "tv";
 		} else {
 		}
 		res.json(data);

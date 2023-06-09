@@ -97,7 +97,7 @@ export default function Home() {
 									<React.Fragment key={i}>
 										<Card
 											poster_path={result.poster_path}
-											id={result.id}
+											id={`${data.type}/${result.id}`}
 											name={result.title}
 										/>
 									</React.Fragment>

@@ -48,7 +48,7 @@ export default function Movies() {
 							<React.Fragment key={i}>
 								{page.results.map((show) => (
 									<Card
-										id={show.id}
+										id={`tv/${show.id}`}
 										name={show.name}
 										poster_path={show.poster_path}
 									/>
