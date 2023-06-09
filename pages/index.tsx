@@ -6,7 +6,7 @@ import axios from "axios";
 import React from "react";
 import Card from "@/components/card";
 export default function Home() {
-	const [data, setData] = useState();
+	const [data, setData] = useState([]);
 	const totalPages = data?.total_pages;
 	const [title, setTitle] = useState("");
 	const [page, setPage] = useState(1);
@@ -58,53 +58,59 @@ export default function Home() {
 		return buttons;
 	};
 	return (
-		<div class="p-4 sm:ml-64">
-			<div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-				<div class="grid grid-cols-3 gap-4 mb-4">
-					<div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-						<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-					</div>
-					<div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-						<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-					</div>
-					<div class="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-						<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-					</div>
-				</div>
-				<div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-					<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-				</div>
-				<div class="grid grid-cols-2 gap-4 mb-4">
-					<div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-						<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-					</div>
-					<div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-						<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-					</div>
-					<div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-						<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-					</div>
-					<div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-						<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-					</div>
-				</div>
-				<div class="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-					<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-				</div>
-				<div class="grid grid-cols-2 gap-4">
-					<div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-						<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-					</div>
-					<div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-						<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-					</div>
-					<div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-						<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
-					</div>
-					<div class="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-						<p class="text-2xl text-gray-400 dark:text-gray-500">+</p>
+		<div className="p-4">
+			<div className="p-4 rounded-lg dark:border-gray-700">
+				<div className="flex items-center justify-center mb-4 rounded bg-gray-50 dark:bg-gray-800">
+					<div className="flex flex-col gap-4 w-5/6 mb-2">
+						<div>
+							<div className="mb-2 block">
+								<Label htmlFor="name" value="Movie/Show Name" />
+							</div>
+							<TextInput
+								id="name"
+								required
+								type="text"
+								value={title}
+								onChange={(e) => setTitle(e.currentTarget.value)}
+							/>
+						</div>
+						<Select
+							id="type"
+							name="type"
+							required
+							onChange={(e) => setType(e.currentTarget.value)}
+						>
+							<option value="any">Any</option>
+							<option value="movie">Movie</option>
+							<option value="series">Show</option>
+						</Select>
+						<Button type="submit" onClick={handleSubmit}>
+							Search
+						</Button>
 					</div>
 				</div>
+				<div className="grid grid-cols-4 gap-4 mb-4">
+					{data && data.results ? (
+						<>
+							<React.Fragment>
+								{data.results.map((result, i) => (
+									<React.Fragment key={i}>
+										<Card
+											poster_path={result.poster_path}
+											id={result.id}
+											name={result.title}
+										/>
+									</React.Fragment>
+								))}
+							</React.Fragment>
+						</>
+					) : null}
+				</div>
+				{data ? (
+					<div className="flex justify-center w-full">
+						{renderPageButtons()}
+					</div>
+				) : null}
 			</div>
 		</div>
 	);
